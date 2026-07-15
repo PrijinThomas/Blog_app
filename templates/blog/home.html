@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | BlogApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Banner -->
+    <div class="p-5 mb-5 rounded-4 text-white" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">Welcome to BlogApp</h1>
+                <p class="lead mb-0 text-muted-light" style="color: #cbd5e1;">A lightweight, clean Django blogging application designed to demonstrate developer workflows and future DevOps steps like Docker containerization.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_create' %}" class="btn btn-primary btn-lg"><i class="fa-solid fa-square-plus me-2"></i>Write a Post</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary btn-lg"><i class="fa-solid fa-user-plus me-2"></i>Join Now</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed Title -->
+    <div class="d-flex align-items-center mb-4">
+        <h2 class="h3 fw-bold mb-0"><i class="fa-solid fa-newspaper text-primary me-2"></i>Recent Articles</h2>
+        <span class="badge bg-secondary ms-3">{{ posts.count }} post{{ posts.count|pluralize }}</span>
+    </div>
+
+    <!-- Blog Posts Grid -->
+    <div class="row">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 blog-card">
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="h4 card-title fw-semibold mb-2">
+                                <a href="{% url 'post_detail' post.pk %}" class="text-decoration-none text-dark">{{ post.title }}</a>
+                            </h3>
+                            <div class="text-muted small mb-3">
+                                <span class="me-2"><i class="fa-regular fa-user me-1"></i>{{ post.author.username }}</span>
+                                <span><i class="fa-regular fa-clock me-1"></i>{{ post.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <p class="card-text text-muted flex-grow-1">
+                                {{ post.content|truncatewords:30 }}
+                            </p>
+                            <div class="pt-3 border-top d-flex justify-content-between align-items-center mt-3">
+                                <a href="{% url 'post_detail' post.pk %}" class="btn btn-outline-primary btn-sm px-3">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                                {% if post.author == user %}
+                                    <div class="btn-group">
+                                        <a href="{% url 'post_edit' post.pk %}" class="btn btn-outline-secondary btn-sm" title="Edit"><i class="fa-solid fa-pencil"></i></a>
+                                        <a href="{% url 'post_delete' post.pk %}" class="btn btn-outline-danger btn-sm" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="card border-0 shadow-sm text-center p-5">
+                    <div class="card-body">
+                        <div class="mb-3 text-muted">
+                            <i class="fa-regular fa-folder-open display-3"></i>
+                        </div>
+                        <h3 class="h4 text-dark fw-semibold">No posts yet</h3>
+                        <p class="text-muted">Be the first to publish a post and share your thoughts!</p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'post_create' %}" class="btn btn-primary px-4"><i class="fa-solid fa-square-plus me-2"></i>Create the first post</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-primary px-4"><i class="fa-solid fa-right-to-bracket me-2"></i>Login to Write</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

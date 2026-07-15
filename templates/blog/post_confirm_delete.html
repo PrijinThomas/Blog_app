@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Post | BlogApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow rounded-4 text-center overflow-hidden">
+                <div class="bg-danger text-white py-4">
+                    <i class="fa-solid fa-circle-exclamation display-3 mb-2"></i>
+                    <h2 class="h4 mb-0 fw-semibold">Are you sure?</h2>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <p class="text-secondary mb-4 fs-6">
+                        You are about to delete the blog post:
+                        <strong class="d-block text-dark mt-2 mb-3">"{{ post.title }}"</strong>
+                        This action cannot be undone and will permanently remove the post.
+                    </p>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger py-2">
+                                <i class="fa-solid fa-trash-can me-2"></i>Confirm Delete
+                            </button>
+                            <a href="{% if is_admin_delete %}{% url 'admin_post_list' %}{% else %}{% url 'post_detail' post.pk %}{% endif %}" class="btn btn-outline-secondary py-2">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | BlogApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <!-- Login Card -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                <div class="card-header bg-dark text-white py-3 text-center border-0">
+                    <h2 class="h5 mb-0 fw-semibold"><i class="fa-solid fa-right-to-bracket me-2 text-primary-emphasis"></i>Welcome Back</h2>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Next redirect parameter -->
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+                        <!-- Form non-field errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in form.non_field_errors %}
+                                    <i class="fa-solid fa-circle-exclamation me-2"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Username Field -->
+                        <div class="mb-4">
+                            <label for="id_username" class="form-label fw-semibold small text-secondary">Username</label>
+                            <input type="text" name="username" autofocus maxlength="150" class="form-control" required id="id_username" placeholder="Enter username">
+                            {% for error in form.username.errors %}
+                                <div class="text-danger small mt-1"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="mb-4">
+                            <label for="id_password" class="form-label fw-semibold small text-secondary">Password</label>
+                            <input type="password" name="password" class="form-control" required id="id_password" placeholder="Enter password">
+                            {% for error in form.password.errors %}
+                                <div class="text-danger small mt-1"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary py-2 btn-lg">
+                                <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Login
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4 border-top pt-3">
+                        <span class="text-muted small">New to BlogApp?</span>
+                        <a href="{% url 'register' %}" class="small text-decoration-none fw-medium ms-1">Create an account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

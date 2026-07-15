@@ -1,0 +1,4 @@
+/* Custom styles for BlogApp */
+body {
+    transition: background-color 0.3s ease;
+}
