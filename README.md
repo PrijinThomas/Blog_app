@@ -1,16 +1,17 @@
 # Dockerized Django Blog Platform
 
-A production-style Django blog application built with Docker, Docker Compose, MySQL, Gunicorn, and Nginx. The project demonstrates modern web application deployment practices along with user authentication, blog management, and containerized infrastructure.
+A production-style Django blog platform built with **Docker**, **Docker Compose**, **MySQL**, **Gunicorn**, **Nginx**, **GitHub Actions**, and **AWS EC2**. This project demonstrates modern DevOps practices including containerization, reverse proxy configuration, automated CI pipelines, environment-based configuration, and cloud deployment.
 
 ---
 
 ## Features
 
 ### User Module
-- User registration, login, and logout
-- User profile page
+- User Registration
+- User Login & Logout
+- User Profile Page
 - Authentication required for creating, editing, and deleting posts
-- Users can only modify their own blog posts
+- Users can only edit or delete their own posts
 
 ### Blog Module
 - Home page displaying all blog posts
@@ -21,90 +22,105 @@ A production-style Django blog application built with Docker, Docker Compose, My
 
 ### Admin Module
 - Django Admin Panel
-- Custom staff-only dashboard
-- View total users and posts
+- Custom staff-only Dashboard
+- View total users and blog posts
 - View latest registered users
 - View latest blog posts
-- Delete users and posts from dashboard
+- Delete users and blog posts from the dashboard
 
-### Production Features
-- Dockerized application
+### DevOps Features
+- Dockerized Django application
 - Multi-container architecture using Docker Compose
-- MySQL database
-- Gunicorn WSGI server
+- MySQL database container
+- Gunicorn WSGI application server
 - Nginx reverse proxy
 - Environment variable configuration using `.env`
 - Automatic database migrations during container startup
+- GitHub Actions Continuous Integration (CI)
+- GitHub Secrets for secure environment management
+- AWS EC2 deployment
 
 ---
 
 # Architecture
 
 ```text
-                 Browser
-                     │
-                     ▼
-            Nginx (Port 80)
-                     │
-                     ▼
-         Gunicorn (Port 8000)
-                     │
-                     ▼
-                 Django App
-                     │
-                     ▼
-                  MySQL 8.4
+                      GitHub
+                         │
+               GitHub Actions (CI)
+                         │
+                         ▼
+                 AWS EC2 (Ubuntu)
+                         │
+                  Docker Compose
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+     Nginx            Gunicorn         MySQL
+        │                │
+        └────────────► Django ◄───────────┘
+                         │
+                         ▼
+                     Browser
 ```
 
 ---
 
 # Tech Stack
 
-### Backend
+## Backend
 
 - Python 3.12
 - Django 5.2
 
-### Database
+## Database
 
 - MySQL 8.4
 
-### DevOps
-
-- Docker
-- Docker Compose
-- Gunicorn
-- Nginx
-
-### Frontend
+## Frontend
 
 - HTML5
 - CSS3
 - Bootstrap 5
 - Django Template Engine
 
+## DevOps & Cloud
+
+- Docker
+- Docker Compose
+- Gunicorn
+- Nginx
+- GitHub Actions
+- GitHub Secrets
+- AWS EC2
+- Linux (Ubuntu 24.04)
+
 ---
 
 # Project Structure
 
 ```text
-blog-project/
+dockerized-django-blogapp/
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 │
 ├── accounts/
 ├── blog/
 ├── config/
-├── templates/
-├── static/
-│
 ├── nginx/
 │   └── default.conf
+├── static/
+├── templates/
 │
 ├── compose.yaml
 ├── Dockerfile
 ├── entrypoint.sh
-├── requirements.txt
 ├── manage.py
+├── requirements.txt
 ├── .env.example
+├── .gitignore
 └── README.md
 ```
 
@@ -112,12 +128,12 @@ blog-project/
 
 # Getting Started
 
-## 1. Clone Repository
+## 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/<your-username>/dockerized-django-blogapp.git
 
-cd blog-project
+cd dockerized-django-blogapp
 ```
 
 ---
@@ -146,7 +162,7 @@ DB_ROOT_PASSWORD=rootpassword
 
 ---
 
-## 3. Build Containers
+## 3. Build and Start Containers
 
 ```bash
 docker compose up --build
@@ -155,15 +171,16 @@ docker compose up --build
 The application will automatically:
 
 - Build the Docker image
-- Start MySQL
+- Start the MySQL container
 - Wait until MySQL is healthy
 - Run Django migrations
 - Start Gunicorn
-- Serve the application through Nginx
+- Start Nginx
+- Serve the application
 
 ---
 
-## 4. Access Application
+## 4. Access the Application
 
 Open:
 
@@ -194,9 +211,37 @@ http://localhost
 | DB_NAME | MySQL Database |
 | DB_USER | MySQL Username |
 | DB_PASSWORD | MySQL Password |
-| DB_HOST | MySQL Host |
-| DB_PORT | MySQL Port |
+| DB_HOST | Database Host |
+| DB_PORT | Database Port |
 | DB_ROOT_PASSWORD | MySQL Root Password |
+
+---
+
+# Continuous Integration (CI)
+
+This project includes a **GitHub Actions** workflow that automatically runs on every push and pull request to the `main` branch.
+
+The pipeline performs:
+
+- Repository checkout
+- Environment file generation using GitHub Secrets
+- Docker Compose validation
+- Docker image build verification
+
+This ensures the project builds successfully before deployment.
+
+---
+
+# Deployment
+
+The application has been successfully deployed on **AWS EC2 (Ubuntu 24.04)** using:
+
+- Docker Compose
+- Nginx
+- Gunicorn
+- MySQL
+
+> **Note:** If using a standard EC2 public IP (without an Elastic IP), the public IP changes after a Stop → Start operation. Update `ALLOWED_HOSTS` accordingly or configure an Elastic IP for a permanent address.
 
 ---
 
@@ -208,25 +253,74 @@ http://localhost
 - Docker Networking
 - Docker Volumes
 - Environment Variables
+- GitHub Secrets
+- GitHub Actions CI
+- Continuous Integration
 - Gunicorn WSGI Server
 - Nginx Reverse Proxy
 - MySQL Container
 - Automatic Database Migration
 - Health Checks
 - Container Startup Automation
+- AWS EC2 Deployment
+- Linux Server Administration
 
 ---
 
 # Future Improvements
 
-- GitHub Actions CI Pipeline
-- AWS EC2 Deployment
+- Continuous Deployment (CD) using GitHub Actions
+- Docker Hub / Amazon ECR Integration
 - HTTPS with Let's Encrypt
-- Monitoring with Prometheus & Grafana
+- Custom Domain Name
+- Prometheus & Grafana Monitoring
 - Kubernetes Deployment
+
+---
+
+# Screenshots
+
+> Add screenshots after deployment.
+
+```
+screenshots/
+├── home.png
+├── login.png
+├── dashboard.png
+├── github-actions.png
+└── aws-deployment.png
+```
+
+Example:
+
+```markdown
+## Home Page
+
+![Home](screenshots/home.png)
+
+## Admin Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+## GitHub Actions
+
+![CI Pipeline](screenshots/github-actions.png)
+
+## AWS Deployment
+
+![AWS](screenshots/aws-deployment.png)
+```
 
 ---
 
 # License
 
-This project is created for learning, portfolio, and DevOps practice purposes.
+This project was developed for learning, portfolio, and DevOps practice purposes.
+
+---
+
+## Author
+
+**Prijin Thomas**
+
+MCA Graduate | Python Developer | DevOps Enthusiast | AWS & Docker Learner
