@@ -309,6 +309,8 @@ Example:
 ## AWS Deployment
 
 ![AWS](screenshots/aws-deployment.png)
+
+![AWS](screenshots/aws-deployment1.png)
 ```
 
 ---
