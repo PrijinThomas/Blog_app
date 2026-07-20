@@ -291,9 +291,6 @@ screenshots/
 └── aws-deployment.png
 ```
 
-Example:
-
-```markdown
 ## Home Page
 
 ![Home](screenshots/home.png)
@@ -311,7 +308,7 @@ Example:
 ![AWS](screenshots/aws-deployment.png)
 
 ![AWS](screenshots/aws-deployment1.png)
-```
+
 
 ---
 
